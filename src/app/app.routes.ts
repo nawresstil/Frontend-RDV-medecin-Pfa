@@ -6,6 +6,7 @@ import {DoctorHomeComponent} from './features/doctor-home/doctor-home.component'
 import {DashboardDoctorComponent} from './features/Doctor/dashboard-doctor/dashboard-doctor.component';
 import {PatientDashboardComponent} from './features/Patient/patient-dashboard/patient-dashboard.component';
 import {PatientProfileComponent} from './features/Doctor/patient-profile/patient-profile.component';
+import {PatientHomeComponent} from './features/patient-home/patient-home.component';
 
 export const APP_ROUTE: Route[] = [
   {
@@ -13,8 +14,7 @@ export const APP_ROUTE: Route[] = [
     component: HomeComponent,
     children: [
       {path: '', component: ContainerComponent},
-      {path: 'doctor', component: DoctorHomeComponent,
-        children: [
+      {path: 'doctor', component: DoctorHomeComponent, children: [
           {path: '', component: DashboardDoctorComponent},
           {
             path: 'features',
@@ -22,7 +22,7 @@ export const APP_ROUTE: Route[] = [
           },
         ]
       },
-      {path: 'patient', component: PatientDashboardComponent,
+      {path: 'patient', component: PatientHomeComponent,
         children: [
           {path: '', component: DashboardDoctorComponent},
           {

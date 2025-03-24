@@ -9,6 +9,9 @@ import {ScheduleTimingsComponent} from './Doctor/schedule-timings/schedule-timin
 import {ProfileSettingsComponent} from './Doctor/profile-doctor-settings/profile-settings.component';
 import {DoctorUpdatePasswordComponent} from './Doctor/doctor-update-password/doctor-update-password.component';
 import {PatientProfileComponent} from './Doctor/patient-profile/patient-profile.component';
+import {ProfilePatientSettingComponent} from './Patient/profile-patient-setting/profile-patient-setting.component';
+import {ChangePasswordComponent} from './Patient/change-password/change-password.component';
+import {AddPrescriptionComponent} from './Doctor/add-prescription/add-prescription.component';
 
 const routes: Routes = [
   { path: 'search', component: SearchDotorComponent },
@@ -20,8 +23,9 @@ const routes: Routes = [
   { path: 'profile-doctor-settings', component: ProfileSettingsComponent },
   { path: 'update-doctor-password', component: DoctorUpdatePasswordComponent },
   {path: 'patient-profile', component: PatientProfileComponent},
-
-
+  { path: 'profile-patient-settings', component: ProfilePatientSettingComponent },
+  { path: 'update-patient-password', component: ChangePasswordComponent },
+  { path: 'add-prescription', component: AddPrescriptionComponent },
 ];
 
 @NgModule({
