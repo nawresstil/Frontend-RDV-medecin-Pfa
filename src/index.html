@@ -8,6 +8,20 @@
   <!-- Favicons -->
   <link  href="assets/img/favicon.png" rel="icon">
 
+  <!-- jQuery (required for Morris.js) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Raphael.js (required for Morris.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael-min.js"></script>
+
+  <!-- Morris.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+  <!-- Morris.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
@@ -17,6 +31,17 @@
 
   <!-- Fancybox CSS -->
   <link rel="stylesheet" href="assets/plugins/fancybox/jquery.fancybox.min.css">
+
+
+  <!-- Feathericon CSS -->
+  <link rel="stylesheet" href="assets/css/feathericon.min.css">
+  <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+
+
+  <!-- Datatables CSS -->
+  <link rel="stylesheet" href="assets/plugins/datatables/datatables.min.css">
+
+
 
 
   <!-- Datetimepicker CSS -->
@@ -31,6 +56,10 @@
 
 
 
+
+  <!-- Slick Carousel CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
 
 
 
@@ -51,34 +80,59 @@
 
 
 
-  <!-- jQuery (required for Slick) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Slick Slider JS -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
 
 
 </head>
 <body>
+
   <app-root></app-root>
 
 
   <!-- jQuery -->
-  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery-3.2.1.min.js"></script>
 
+  <!-- Raphael (Required for Morris.js) -->
+  <script src="assets/plugins/raphael/raphael.min.js"></script>
+
+
+  <!-- Morris.js (Load After Raphael) -->
+  <script src="assets/plugins/morris/morris.min.js"></script>
+
+  <!-- Morris Chart Script -->
+  <script src="assets/js/chart.morris.js"></script>
   <!-- Bootstrap Core JS -->
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
 
+  <!-- Slimscroll JS -->
+  <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+
+
+
+<!--  <script src="assets/js/jquery.min.js"></script>-->
+
+
+
+
+
+
+
+  <!-- Datatables JS -->
+  <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="assets/plugins/datatables/datatables.min.js"></script>
+
+
+
+
+
   <!-- Slick JS -->
   <script src="assets/js/slick.js"></script>
 
-  <!-- Custom JS -->
-  <script src="assets/js/script.js"></script>
+
 
   <script src="assets/plugins/fancybox/jquery.fancybox.min.js"></script>
 
-  <!-- Custom JS -->
   <!-- Sticky Sidebar JS -->
   <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
   <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
@@ -108,21 +162,14 @@
   <!-- Circle Progress JS -->
   <script src="assets/js/circle-progress.min.js"></script>
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- Custom JS -->
 
-<script>
-  $(document).ready(function(){
-    $('.features-slider').slick({
-      slidesToShow: 4,  // Number of items visible at a time
-      slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 3000,
-      dots: true,
-      arrows: false,  // You can enable arrows if needed
-      centerMode: true,
-      variableWidth: false
-    });
-  });
-</script>
+  <!-- Custom JS -->
+  <script  src="assets/js/script.js"></script>
+
+
+
+
 
 </body>
 </html>

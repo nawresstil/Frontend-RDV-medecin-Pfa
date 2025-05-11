@@ -1,5 +1,3 @@
-<!-- Main Wrapper -->
-<div class="main-wrapper">
   <!-- Breadcrumb -->
   <div class="breadcrumb-bar">
     <div class="container-fluid">
@@ -31,10 +29,6 @@
     </div>
   </div>
   <!-- /Breadcrumb -->
-
-  <!-- Page Content -->
-  <div class="content">
-    <div class="container-fluid">
 
       <div class="row">
         <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
@@ -116,48 +110,54 @@
         <div class="col-md-12 col-lg-8 col-xl-9">
 
           <!-- Doctor Widget -->
-          <div class="card">
+          <div class="card" *ngFor="let doctor of doctors">
             <div class="card-body">
               <div class="doctor-widget">
                 <div class="doc-info-left">
                   <div class="doctor-img">
-                    <a href="doctor-profile.html">
-                      <img src="../../../../assets/img/doctors/doctor-thumb-01.jpg" class="img-fluid" alt="User Image">
+                    <a [routerLink]="['/home/doctor-profile', doctor.id]">
+                      <img [src]="'http://localhost:8083/uploads/profile-pictures/' + doctor.profilePicture" alt="Doctor"
+                        class="img-fluid"
+                        alt="User Image"
+                      />
                     </a>
                   </div>
                   <div class="doc-info-cont">
-                    <h4 class="doc-name"><a href="doctor-profile.html">Dr. Ruby Perrin</a></h4>
-                    <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-                    <h5 class="doc-department"><img src="../../../../assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</h5>
+                    <h4 class="doc-name">
+                      <a [routerLink]="['/home/doctor-profile', doctor.id]">
+                        Dr. {{ doctor.firstname }} {{ doctor.lastname }}
+                      </a>
+                    </h4>
+                    <p class="doc-speciality">{{ doctor.aboutMe }}</p>
+                    <h5 class="doc-department" *ngFor="let speciality of doctor.specialities">
+                      <img
+                        [src]="'http://localhost:8083/uploads/' + speciality.imageUrl"
+                        alt="Speciality"
+                        class="img-fluid"
+                      >
+                      {{ speciality.name }}
+                    </h5>
+
+                    <div class="clinic-services">
+                      <span *ngFor="let service of doctor.services">{{ service }}</span>
+                    </div>
                     <div class="rating">
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star"></i>
-                      <span class="d-inline-block average-rating">(17)</span>
+                      <span class="d-inline-block average-rating">(35)</span>
                     </div>
                     <div class="clinic-details">
-                      <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Florida, USA</p>
+                      <p class="doc-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ doctor.city }}, {{ doctor.country }}
+                      </p>
                       <ul class="clinic-gallery">
-                        <li>
-                          <a href="../../../../assets/img/features/feature-01.jpg" data-fancybox="gallery">
-                            <img src="../../../../assets/img/features/feature-01.jpg" alt="Feature">
-                          </a>
-                        </li>
-                        <li>
-                          <a href="../../../../assets/img/features/feature-02.jpg" data-fancybox="gallery">
-                            <img src="../../../../assets/img/features/feature-02.jpg" alt="Feature">
-                          </a>
-                        </li>
-                        <li>
-                          <a href="../../../../assets/img/features/feature-03.jpg" data-fancybox="gallery">
-                            <img src="../../../../assets/img/features/feature-03.jpg" alt="Feature">
-                          </a>
-                        </li>
-                        <li>
-                          <a href="../../../../assets/img/features/feature-04.jpg" data-fancybox="gallery">
-                            <img src="../../../../assets/img/features/feature-04.jpg" alt="Feature">
+                        <li *ngFor="let image of doctor.clinicImages">
+                          <a [href]="image" data-fancybox="gallery">
+                            <img [src]="'http://localhost:8083/uploads/clinic-images/' + image" alt="ClinicImages">
                           </a>
                         </li>
                       </ul>
@@ -165,26 +165,41 @@
                     <div class="clinic-services">
                       <span>Dental Fillings</span>
                       <span> Whitneing</span>
+                      <span *ngFor="let service of doctor.services">{{ service }}</span>
                     </div>
                   </div>
                 </div>
+
                 <div class="doc-info-right">
                   <div class="clini-infos">
                     <ul>
-                      <li><i class="far fa-thumbs-up"></i> 98%</li>
-                      <li><i class="far fa-comment"></i> 17 Feedback</li>
-                      <li><i class="fas fa-map-marker-alt"></i> Florida, USA</li>
-                      <li><i class="far fa-money-bill-alt"></i> $300 - $1000 <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+                      <li><i class="far fa-thumbs-up"></i> {{ doctor.approvalRate || '100%' }}</li>
+                      <li><i class="far fa-comment"></i> {{ doctor.ratingCount || 0 }} Feedback</li>
+                      <li>
+                        <i class="fas fa-map-marker-alt"></i> {{ doctor.city }}, {{ doctor.country }}
+                      </li>
+                      <li>
+                        <i class="far fa-money-bill-alt"></i>
+                        {{ doctor.customPrice || 0 }} TND
+                        <i
+                          class="fas fa-info-circle"
+                          data-toggle="tooltip"
+                          title="Consultation fee"
+                        ></i>
+                      </li>
                     </ul>
                   </div>
                   <div class="clinic-booking">
-                    <a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
-                    <a class="apt-btn" href="booking.html">Book Appointment</a>
+                    <a class="view-pro-btn" [routerLink]="['/home/doctor-profile', doctor.id]">
+                      View Profile
+                    </a>
+                    <a class="apt-btn" routerLink="/booking">Book Appointment</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <!-- /Doctor Widget -->
 
           <!-- Doctor Widget -->
@@ -481,10 +496,3 @@
         </div>
       </div>
 
-    </div>
-
-  </div>
-  <!-- /Page Content -->
-
-</div>
-<!-- /Main Wrapper -->
