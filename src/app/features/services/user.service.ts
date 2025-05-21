@@ -6,6 +6,7 @@ import {environment} from "../../../environments/environment";
 import {RegisterRequest} from "../../models/registerRequest";
 import {AuthenticationResponse} from "../../models/authenticationResponse";
 import {AuthenticationService} from '../login/services/authentification.service';
+import {DoctorDto} from '../../models/DoctorDto';
 
 @Injectable({
   providedIn: 'root'
@@ -48,4 +49,11 @@ export class UserService {
     const headers = new HttpHeaders({Authorization: 'Bearer ' + this.authService.loadToken()});
     return this.http.get(environment.baseUrl +`/user/`+ userId,{headers});
   }
+
+  public getDoctorById(id: number): Observable<DoctorDto> {
+    const headers = new HttpHeaders({ Authorization: 'Bearer ' + this.authService.loadToken() });
+    return this.http.get<DoctorDto>(`${environment.baseUrl}/user/${id}`, { headers });
+  }
+
+
 }

@@ -23,7 +23,7 @@ export const APP_ROUTE: Route[] = [
     children: [
       {path: 'signin_signup', component: LoginComponent},
       {path: '', component: ContainerComponent},
-      { path: 'doctor-profile', component: DoctorProfileComponent },
+      { path: 'doctor-profile/:id', component: DoctorProfileComponent },
       {path: 'doctor', component: DoctorHomeComponent, children: [
           {path: '', component: DashboardDoctorComponent},
           {

@@ -22,4 +22,13 @@ export class SearchDoctorsService {
     const headers = new HttpHeaders({Authorization: 'Bearer ' + this.authService.loadToken()});
     return this.http.get(environment.baseUrl +`/formation/${id}`,{headers} );
   }
+
+  searchDoctors(keyword: string) {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.loadToken()
+    });
+    const url = environment.baseUrl + `/user/search_doctors?keyword=${encodeURIComponent(keyword)}`;
+    return this.http.get<DoctorDto[]>(url, { headers });
+  }
+
 }

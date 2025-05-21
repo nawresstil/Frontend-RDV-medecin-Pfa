@@ -1,0 +1,14 @@
+.input-group .form-control {
+  border: 1px solid #ced4da;
+  box-shadow: none;
+  transition: border-color 0.2s;
+}
+
+.input-group .form-control:focus {
+  border-color: #007bff;
+}
+
+.input-group-text i {
+  color: #007bff;
+  font-size: 18px;
+}

@@ -1,3 +1,5 @@
+import {Speciality} from './Speciality';
+
 export interface DoctorDto {
   id: number;
   firstname: string;
@@ -17,7 +19,7 @@ export interface DoctorDto {
   oldPassword?: string;
   role: string;
   profilePicture: string;
-
+  gender: string;
   aboutMe: string;
   biography: string;
 
@@ -32,7 +34,7 @@ export interface DoctorDto {
 
   services: string[];
   specialityIds: number[];
-
+  specialities: Speciality[];
   education: any[];  // you can define EducationDto model similarly
   experience: any[];
   awards: any[];

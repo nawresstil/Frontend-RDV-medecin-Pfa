@@ -9,28 +9,45 @@
               <li class="breadcrumb-item active" aria-current="page">Search</li>
             </ol>
           </nav>
-          <h2 class="breadcrumb-title">2245 matches found for : Dentist In Bangalore</h2>
         </div>
         <div class="col-md-4 col-12 d-md-block d-none">
-          <div class="sort-by">
-            <span class="sort-title">Sort by</span>
-            <span class="sortby-fliter">
-									<select class="select">
-										<option>Select</option>
-										<option class="sorting">Rating</option>
-										<option class="sorting">Popular</option>
-										<option class="sorting">Latest</option>
-										<option class="sorting">Free</option>
-									</select>
-								</span>
+
+<!--          <div class="sort-by">-->
+<!--            <span class="sort-title">Sort by</span>-->
+<!--            <span class="sortby-fliter">-->
+<!--									<select class="select">-->
+<!--										<option>Select</option>-->
+<!--										<option class="sorting">Rating</option>-->
+<!--										<option class="sorting">Popular</option>-->
+<!--										<option class="sorting">Latest</option>-->
+<!--										<option class="sorting">Free</option>-->
+<!--									</select>-->
+<!--								</span>-->
+<!--          </div>-->
+          <!-- Search Input -->
+          <div class="search-box">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control rounded-pill px-3"
+                placeholder="Search doctors..."
+                [(ngModel)]="searchTerm"
+                (input)="onSearchChange()"
+                style="height: 40px; min-width: 200px;"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text bg-white border-0">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
+      </div>
       </div>
     </div>
   </div>
   <!-- /Breadcrumb -->
-
-      <div class="row">
+  <div class="row">
         <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
 
           <!-- Search Filter -->
@@ -39,67 +56,43 @@
               <h4 class="card-title mb-0">Search Filter</h4>
             </div>
             <div class="card-body">
+<!--              <div class="filter-widget">-->
+<!--                <div class="cal-icon">-->
+<!--                  <input type="text" class="form-control datetimepicker" placeholder="Select Date">-->
+<!--                </div>-->
+<!--              </div>-->
               <div class="filter-widget">
-                <div class="cal-icon">
-                  <input type="text" class="form-control datetimepicker" placeholder="Select Date">
-                </div>
-              </div>
-              <div class="filter-widget">
-                <h4>Gender</h4>
-                <div>
+                <h4>Select Gender</h4>
+                <div *ngFor="let gender of availableGenders">
                   <label class="custom_check">
-                    <input type="checkbox" name="gender_type" checked>
-                    <span class="checkmark"></span> Male Doctor
+                    <input
+                      type="checkbox"
+                      [value]="gender"
+                      (change)="onGenderCheckboxChange($event)"
+                      [checked]="selectedGenders.includes(gender)"
+                    />
+                    <span class="checkmark"></span> {{ gender }}
                   </label>
                 </div>
-                <div>
-                  <label class="custom_check">
-                    <input type="checkbox" name="gender_type">
-                    <span class="checkmark"></span> Female Doctor
-                  </label>
-                </div>
               </div>
+
               <div class="filter-widget">
                 <h4>Select Specialist</h4>
-                <div>
+                <div *ngFor="let speciality of availableSpecialities">
                   <label class="custom_check">
-                    <input type="checkbox" name="select_specialist" checked>
-                    <span class="checkmark"></span> Urology
-                  </label>
-                </div>
-                <div>
-                  <label class="custom_check">
-                    <input type="checkbox" name="select_specialist" checked>
-                    <span class="checkmark"></span> Neurology
-                  </label>
-                </div>
-                <div>
-                  <label class="custom_check">
-                    <input type="checkbox" name="select_specialist">
-                    <span class="checkmark"></span> Dentist
-                  </label>
-                </div>
-                <div>
-                  <label class="custom_check">
-                    <input type="checkbox" name="select_specialist">
-                    <span class="checkmark"></span> Orthopedic
-                  </label>
-                </div>
-                <div>
-                  <label class="custom_check">
-                    <input type="checkbox" name="select_specialist">
-                    <span class="checkmark"></span> Cardiologist
-                  </label>
-                </div>
-                <div>
-                  <label class="custom_check">
-                    <input type="checkbox" name="select_specialist">
-                    <span class="checkmark"></span> Cardiologist
+                    <input
+                      type="checkbox"
+                      [value]="speciality"
+                      (change)="onSpecialityCheckboxChange($event)"
+                      [checked]="selectedSpecialities.includes(speciality)"
+                    />
+                    <span class="checkmark"></span> {{ speciality }}
                   </label>
                 </div>
               </div>
+
               <div class="btn-search">
-                <button type="button" class="btn btn-block">Search</button>
+                <button type="button" class="btn btn-block" (click)="onApplyFilters()">Search</button>
               </div>
             </div>
           </div>
@@ -108,9 +101,12 @@
         </div>
 
         <div class="col-md-12 col-lg-8 col-xl-9">
+          <div *ngIf="filteredDoctors.length === 0" class="alert alert-warning mt-3 text-center">
+            No doctors found matching your criteria.
+          </div>
 
           <!-- Doctor Widget -->
-          <div class="card" *ngFor="let doctor of doctors">
+          <div class="card" *ngFor="let doctor of filteredDoctors">
             <div class="card-body">
               <div class="doctor-widget">
                 <div class="doc-info-left">
@@ -137,10 +133,6 @@
                       >
                       {{ speciality.name }}
                     </h5>
-
-                    <div class="clinic-services">
-                      <span *ngFor="let service of doctor.services">{{ service }}</span>
-                    </div>
                     <div class="rating">
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star filled"></i>
@@ -163,8 +155,6 @@
                       </ul>
                     </div>
                     <div class="clinic-services">
-                      <span>Dental Fillings</span>
-                      <span> Whitneing</span>
                       <span *ngFor="let service of doctor.services">{{ service }}</span>
                     </div>
                   </div>
@@ -173,8 +163,8 @@
                 <div class="doc-info-right">
                   <div class="clini-infos">
                     <ul>
-                      <li><i class="far fa-thumbs-up"></i> {{ doctor.approvalRate || '100%' }}</li>
-                      <li><i class="far fa-comment"></i> {{ doctor.ratingCount || 0 }} Feedback</li>
+<!--                      <li><i class="far fa-thumbs-up"></i> {{ doctor.approvalRate || '100%' }}</li>-->
+<!--                      <li><i class="far fa-comment"></i> {{ doctor.ratingCount || 0 }} Feedback</li>-->
                       <li>
                         <i class="fas fa-map-marker-alt"></i> {{ doctor.city }}, {{ doctor.country }}
                       </li>
