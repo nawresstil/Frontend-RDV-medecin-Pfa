@@ -112,10 +112,7 @@
                 <div class="doc-info-left">
                   <div class="doctor-img">
                     <a [routerLink]="['/home/doctor-profile', doctor.id]">
-                      <img [src]="'http://localhost:8083/uploads/profile-pictures/' + doctor.profilePicture" alt="Doctor"
-                        class="img-fluid"
-                        alt="User Image"
-                      />
+                      <img [src]="'http://localhost:8083/uploads/profile-pictures/' + doctor.profilePicture" alt="Doctor" class="img-fluid" alt="User Image"/>
                     </a>
                   </div>
                   <div class="doc-info-cont">
@@ -183,7 +180,7 @@
                     <a class="view-pro-btn" [routerLink]="['/home/doctor-profile', doctor.id]">
                       View Profile
                     </a>
-                    <a class="apt-btn" routerLink="/booking">Book Appointment</a>
+                    <a class="apt-btn" [routerLink]="['/home/booking', doctor.id]">Book Appointment</a>
                   </div>
                 </div>
               </div>

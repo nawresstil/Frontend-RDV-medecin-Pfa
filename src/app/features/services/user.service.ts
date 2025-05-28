@@ -55,5 +55,25 @@ export class UserService {
     return this.http.get<DoctorDto>(`${environment.baseUrl}/user/${id}`, { headers });
   }
 
+  public updateDoctor(doctorDto: DoctorDto, profilePicture?: File, clinicImages?: File[]): Observable<DoctorDto> {
+    const formData: FormData = new FormData();
+    formData.append('doctorDto', JSON.stringify(doctorDto));
 
+    if (profilePicture) {
+      formData.append('profilePicture', profilePicture);
+    }
+
+    if (clinicImages && clinicImages.length > 0) {
+      clinicImages.forEach((image, index) => {
+        formData.append('clinicImages', image);
+      });
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.loadToken()
+      // 'Content-Type' is NOT set here because Angular will automatically set the correct multipart boundary
+    });
+
+    return this.http.put<DoctorDto>(`${environment.baseUrl}/doctor/profile`, formData, { headers });
+  }
 }

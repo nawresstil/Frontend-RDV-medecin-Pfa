@@ -11,6 +11,8 @@ import {LoginComponent} from './features/login/login.component';
 import {SignUpComponent} from './features/signups/sign-up/sign-up.component';
 import {SignupDoctorComponent} from './features/signups/signup-doctor/signup-doctor.component';
 import {ResetPasswordComponent} from './features/signups/reset-password/reset-password.component';
+import {BookingComponent} from './features/Patient/booking/booking.component';
+import {PatientProfileComponent} from './features/Doctor/patient-profile/patient-profile.component';
 
 export const APP_ROUTE: Route[] = [
   {path: 'signin', component: LoginComponent},
@@ -24,6 +26,8 @@ export const APP_ROUTE: Route[] = [
       {path: 'signin_signup', component: LoginComponent},
       {path: '', component: ContainerComponent},
       { path: 'doctor-profile/:id', component: DoctorProfileComponent },
+      { path: 'booking/:doctorId', component: BookingComponent },
+      {path: 'patient-profile/:patientId', component: PatientProfileComponent},
       {path: 'doctor', component: DoctorHomeComponent, children: [
           {path: '', component: DashboardDoctorComponent},
           {

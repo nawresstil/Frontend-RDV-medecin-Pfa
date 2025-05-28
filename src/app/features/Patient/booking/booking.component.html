@@ -1,0 +1,121 @@
+<!-- booking.component.html -->
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+        <nav aria-label="breadcrumb" class="page-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Booking</li>
+          </ol>
+        </nav>
+        <h2 class="breadcrumb-title">Booking</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Breadcrumb -->
+
+<!-- Page Content -->
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+
+        <!-- Doctor Card -->
+        <div *ngIf="doctor" class="card">
+          <div class="card-body">
+            <div class="booking-doc-info">
+              <a href="doctor-profile.html" class="booking-doc-img">
+                <img [src]="'http://localhost:8083/uploads/profile-pictures/' + doctor.profilePicture" alt="Doctor" alt="User Image"/>
+              </a>
+              <div class="booking-info">
+                <h4><a href="doctor-profile.html">Dr. {{ doctor.firstname }} {{ doctor.lastname }}</a></h4>
+                <div class="rating">
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star filled"></i>
+                  <i class="fas fa-star"></i>
+                  <span class="d-inline-block average-rating">35</span>
+                </div>
+                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> {{ doctor.city }} {{ doctor.address }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Doctor Card -->
+
+
+        <!-- Schedule Widget -->
+        <div class="card booking-schedule schedule-widget">
+
+          <!-- Schedule Header -->
+          <div class="schedule-header">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="day-slot">
+                  <ul class="d-flex">
+                    <li class="left-arrow">
+                      <a href="#"><i class="fa fa-chevron-left"></i></a>
+                    </li>
+
+                    <!-- Dynamic Day Headers -->
+                    <li *ngFor="let group of groupedDisponibilities">
+                      <span>{{ group.day }}</span>
+                      <span class="slot-date">
+                {{ group.date | date:'dd MMM' }}
+                        <small class="slot-year">{{ group.date | date:'yyyy' }}</small>
+              </span>
+                    </li>
+
+                    <li class="right-arrow">
+                      <a href="#"><i class="fa fa-chevron-right"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule Content -->
+          <div class="schedule-cont">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="time-slot">
+                  <ul class="clearfix d-flex">
+
+                    <!-- Time Slots under each day column -->
+                    <li *ngFor="let group of groupedDisponibilities">
+                      <a *ngFor="let slotObj of group.slots"
+                         class="timing"
+                         [ngClass]="{ 'selected': selectedSlot === slotObj.slot && selectedDisponibilityId === slotObj.dispId }"
+                         (click)="selectSlot(slotObj.dispId, slotObj.slot)">
+                        <span>{{ slotObj.slot }}</span>
+                      </a>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Schedule Widget -->
+
+
+
+        <!-- Submit Section -->
+        <div class="submit-section proceed-btn text-right">
+          <button class="btn btn-primary submit-btn" (click)="bookSlot()">Proceed to Book</button>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Content -->

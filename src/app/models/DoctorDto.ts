@@ -35,9 +35,10 @@ export interface DoctorDto {
   services: string[];
   specialityIds: number[];
   specialities: Speciality[];
-  education: any[];  // you can define EducationDto model similarly
-  experience: any[];
-  awards: any[];
-  memberships: string[];
-  registrations: any[];
+  specialization: string;
+  education: { degree: string; institute: string; yearOfCompletion: string }[];
+  experience: { hospitalName: string; fromDate: string; toDate: string ;designation: string}[];
+
+  awards: { name: string,year: string }[];
+
 }

@@ -13,6 +13,7 @@ import {ProfilePatientSettingComponent} from './Patient/profile-patient-setting/
 import {ChangePasswordComponent} from './Patient/change-password/change-password.component';
 import {AddPrescriptionComponent} from './Doctor/add-prescription/add-prescription.component';
 import {EditPrescriptionComponent} from './Doctor/edit-prescription/edit-prescription.component';
+import {BookingComponent} from './Patient/booking/booking.component';
 
 const routes: Routes = [
   { path: 'search', component: SearchDotorComponent },
@@ -23,11 +24,11 @@ const routes: Routes = [
   { path: 'schedule-timings', component: ScheduleTimingsComponent },
   { path: 'profile-doctor-settings', component: ProfileSettingsComponent },
   { path: 'update-doctor-password', component: DoctorUpdatePasswordComponent },
-  {path: 'patient-profile', component: PatientProfileComponent},
   { path: 'profile-patient-settings', component: ProfilePatientSettingComponent },
   { path: 'update-patient-password', component: ChangePasswordComponent },
   { path: 'add-prescription', component: AddPrescriptionComponent },
   { path: 'edit-prescription', component: EditPrescriptionComponent },
+
 
 
 ];

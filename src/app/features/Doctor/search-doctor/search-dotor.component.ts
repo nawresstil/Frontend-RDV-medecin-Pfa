@@ -72,6 +72,7 @@ export class SearchDotorComponent implements OnInit {
       );
     });
   }
+
   // onSpecialityFilterChange(event: any) {
   //   const speciality = event.target.value;
   //
