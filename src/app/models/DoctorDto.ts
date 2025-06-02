@@ -18,6 +18,7 @@ export interface DoctorDto {
   confirmPassword?: string;
   oldPassword?: string;
   role: string;
+  status: string;
   profilePicture: string;
   gender: string;
   aboutMe: string;
@@ -32,7 +33,7 @@ export interface DoctorDto {
   isFree: boolean;
   customPrice: number;
 
-  services: string[];
+  services : { services_name: string}[];
   specialityIds: number[];
   specialities: Speciality[];
   specialization: string;

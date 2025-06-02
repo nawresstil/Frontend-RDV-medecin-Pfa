@@ -1,124 +1,138 @@
 <div class="row">
   <div class="col-sm-12">
-    <div class="card">
+    <div class="card shadow-sm">
       <div class="card-body">
-        <h4 class="card-title">Schedule Timings</h4>
-        <input type="time" [(ngModel)]="newSlot.startTime" (change)="generateTimeSlots()" />
-        <input type="time" [(ngModel)]="newSlot.endTime" (change)="generateTimeSlots()" />
-        <div class="form-group">
-          <label>Slot Duration (Minutes)</label>
+        <h4 class="card-title mb-4">Schedule Timings</h4>
 
-          <select class="form-control" name="slotDurationMinutes" (change)="generateTimeSlots()" [(ngModel)]="newSlot.slotDurationMinutes">
-            <option [value]="15">15 mins</option>
-            <option [value]="30">30 mins</option>
-            <option [value]="45">45 mins</option>
-            <option [value]="60">1 hour</option>
-          </select>
-<!--          <div class="form-group mt-2">-->
-<!--            <label>Generated Time Slots</label>-->
-<!--            <select class="form-control" *ngIf="timeSlots.length > 0">-->
-<!--              <option *ngFor="let slot of timeSlots" [value]="slot">{{ slot }}</option>-->
-<!--            </select>-->
-<!--          </div>-->
-        </div>
-        <div class="nav nav-tabs">
-          <a class="nav-item nav-link" *ngFor="let day of days" [class.active]="selectedDay === day" (click)="selectDay(day)">
-            {{ day }}
-          </a>
+        <!-- Time Inputs and Duration -->
+        <div class="row align-items-end mb-4">
+          <div class="col-md-4 mb-2">
+            <label for="startTime">Start Time</label>
+            <input id="startTime" type="time" class="form-control" [(ngModel)]="newSlot.startTime" (change)="generateTimeSlots()" />
+          </div>
+          <div class="col-md-4 mb-2">
+            <label for="endTime">End Time</label>
+            <input id="endTime" type="time" class="form-control" [(ngModel)]="newSlot.endTime" (change)="generateTimeSlots()" />
+          </div>
+          <div class="col-md-4 mb-2">
+            <label>Slot Duration (Minutes)</label>
+            <select class="form-control" [(ngModel)]="newSlot.slotDurationMinutes" (change)="generateTimeSlots()">
+              <option [value]="15">15 mins</option>
+              <option [value]="30">30 mins</option>
+              <option [value]="45">45 mins</option>
+              <option [value]="60">1 hour</option>
+            </select>
+          </div>
         </div>
 
-        <div class="tab-content mt-3">
+        <!-- Day Tabs -->
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item" *ngFor="let day of days">
+            <a class="nav-link" [class.active]="selectedDay === day" (click)="selectDay(day)">
+              {{ day }}
+            </a>
+          </li>
+        </ul>
+
+        <!-- Slot List for Selected Day -->
+        <div class="tab-content">
           <div *ngFor="let day of days">
             <div *ngIf="selectedDay === day">
-              <h5>{{ day }}'s Slots</h5>
+              <h5 class="mb-3">{{ day }}'s Slots</h5>
 
-              <div *ngIf="getSlotsForDay(day).length === 0">Not Available</div>
-              <div *ngFor="let slot of getSlotsForDay(day)" class="d-flex justify-content-between align-items-center mb-2">
+              <div *ngIf="getSlotsForDay(day).length === 0" class="text-muted mb-3">No slots available.</div>
+
+              <div *ngFor="let slot of getSlotsForDay(day)" class="d-flex justify-content-between align-items-center border p-2 rounded mb-2">
                 <span>{{ slot.startTime }} - {{ slot.endTime }}</span>
-                <button class="btn btn-sm btn-danger" (click)="deleteSlot(slot.id)"><i class="fa fa-times"></i></button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteSlot(slot.id)">
+                  <i class="fa fa-times"></i>
+                </button>
               </div>
 
-              <!-- Add new slot -->
-              <form (ngSubmit)="addSlot()" class="form-inline mt-3">
-                <!-- Start Time Dropdown -->
-                <select class="form-control mr-2" [(ngModel)]="newSlot.startTime" name="startTime" (change)="filterEndTimes()" required>
-                  <option *ngFor="let time of startTimes" [value]="time">{{ time }}</option>
-                </select>
+              <!-- Add New Slot -->
+              <form (ngSubmit)="addSlot()" class="form-inline mt-4">
+                <div class="form-group mr-2">
+                  <label class="sr-only">Start</label>
+                  <select class="form-control" [(ngModel)]="newSlot.startTime" name="startTime" (change)="filterEndTimes()" required>
+                    <option *ngFor="let time of startTimes" [value]="time">{{ time }}</option>
+                  </select>
+                </div>
 
-                <!-- End Time Dropdown: Dynamically filtered -->
-                <select class="form-control mr-2" [(ngModel)]="newSlot.endTime" name="endTime" required>
-                  <option *ngFor="let end of filteredEndTimes" [value]="end">
-                    {{ end }}
-                  </option>
-                </select>
+                <div class="form-group mr-2">
+                  <label class="sr-only">End</label>
+                  <select class="form-control" [(ngModel)]="newSlot.endTime" name="endTime" required>
+                    <option *ngFor="let end of filteredEndTimes" [value]="end">{{ end }}</option>
+                  </select>
+                </div>
 
                 <button type="submit" class="btn btn-primary">Add Slot</button>
               </form>
             </div>
           </div>
         </div>
+
       </div>
     </div>
-
   </div>
 </div>
+
 
 
 <!-- Add Time Slot Modal -->
-<div class="modal fade custom-modal" id="add_time_slot">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Time Slots</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="hours-info">
-            <div class="row form-row hours-cont">
-              <div class="col-12 col-md-10">
-                <div class="row form-row">
-                  <div class="col-12 col-md-6">
-                    <div class="form-group">
-                      <label>Start Time</label>
-                      <select class="form-control">
-                        <option>-</option>
-                        <option>12.00 am</option>
-                        <option>12.30 am</option>
-                        <option>1.00 am</option>
-                        <option>1.30 am</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="form-group">
-                      <label>End Time</label>
-                      <select class="form-control">
-                        <option>-</option>
-                        <option>12.00 am</option>
-                        <option>12.30 am</option>
-                        <option>1.00 am</option>
-                        <option>1.30 am</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--<div class="modal fade custom-modal" id="add_time_slot">-->
+<!--  <div class="modal-dialog modal-dialog-centered">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modal-title">Add Time Slots</h5>-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--          <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <form>-->
+<!--          <div class="hours-info">-->
+<!--            <div class="row form-row hours-cont">-->
+<!--              <div class="col-12 col-md-10">-->
+<!--                <div class="row form-row">-->
+<!--                  <div class="col-12 col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>Start Time</label>-->
+<!--                      <select class="form-control">-->
+<!--                        <option>-</option>-->
+<!--                        <option>12.00 am</option>-->
+<!--                        <option>12.30 am</option>-->
+<!--                        <option>1.00 am</option>-->
+<!--                        <option>1.30 am</option>-->
+<!--                      </select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div class="col-12 col-md-6">-->
+<!--                    <div class="form-group">-->
+<!--                      <label>End Time</label>-->
+<!--                      <select class="form-control">-->
+<!--                        <option>-</option>-->
+<!--                        <option>12.00 am</option>-->
+<!--                        <option>12.30 am</option>-->
+<!--                        <option>1.00 am</option>-->
+<!--                        <option>1.30 am</option>-->
+<!--                      </select>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="add-more mb-3">
-            <a href="javascript:void(0);" class="add-hours"><i class="fa fa-plus-circle"></i> Add More</a>
-          </div>
-          <div class="submit-section text-center">
-            <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<!--          <div class="add-more mb-3">-->
+<!--            <a href="javascript:void(0);" class="add-hours"><i class="fa fa-plus-circle"></i> Add More</a>-->
+<!--          </div>-->
+<!--          <div class="submit-section text-center">-->
+<!--            <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 <!-- /Add Time Slot Modal -->
 

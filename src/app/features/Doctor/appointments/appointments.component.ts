@@ -23,7 +23,6 @@ export class AppointmentsComponent implements OnInit {
   ngOnInit() {
     this.getConnectedUser();
   }
-
   getConnectedUser() {
     this.userService.getConnectedUser().subscribe((user: Users) => {
       this.userC = user;
@@ -31,7 +30,6 @@ export class AppointmentsComponent implements OnInit {
       this.fetchAppointments(); // Call after setting doctorId
     });
   }
-
   fetchAppointments() {
     this.http.get<any[]>(`http://localhost:8083/rdv/doctor/${this.doctorId}`).subscribe(rdvList => {
       const pendingRdv = rdvList.filter(rdv => rdv.status === 'PENDING');
@@ -46,7 +44,6 @@ export class AppointmentsComponent implements OnInit {
       });
     });
   }
-
   acceptAppointment(id: number) {
     Swal.fire({
       title: 'Confirm Appointment?',

@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {ChartOptions, ChartType, ChartDataset, Chart} from 'chart.js';
+import {UserService} from '../../../features/services/user.service';
 type ChartDataLabels = string[];  // Optional if you want to type it
 @Component({
   selector: 'app-dashboard-admin',
@@ -10,10 +11,13 @@ type ChartDataLabels = string[];  // Optional if you want to type it
   styleUrl: './dashboard-admin.component.css'
 })
 export class DashboardAdminComponent implements OnInit {
-
-  constructor(private el: ElementRef) { }
+  doctorsCount = 0;
+  patientsCount = 0;
+  constructor(private userService: UserService, private el: ElementRef) { }
 
   ngOnInit(): void {
+    this.loadDoctorsCount();
+    this.loadPatientsCount();
     const ctx = this.el.nativeElement.querySelector('#myChart'); // Get the canvas element
     new Chart(ctx, {
       type: 'line', // Chart type (can be line, bar, pie, etc.)
@@ -35,6 +39,18 @@ export class DashboardAdminComponent implements OnInit {
           }
         }
       }
+    });
+  }
+
+  loadDoctorsCount() {
+    this.userService.getDoctors().subscribe(doctors => {
+      this.doctorsCount = doctors.length;
+    });
+  }
+
+  loadPatientsCount() {
+    this.userService.getPatients().subscribe(patients => {
+      this.patientsCount = patients.length;
     });
   }
 }

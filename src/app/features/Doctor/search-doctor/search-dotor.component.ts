@@ -39,7 +39,7 @@ export class SearchDotorComponent implements OnInit {
     this.doctorService.getAllDoctors().subscribe({
       next: (response: DoctorDto[]) => {
         this.doctors = response;
-        this.filteredDoctors = response;
+        this.filteredDoctors = response.filter(doc => doc.status === 'CONFIRMED');
 
         const allSpecialities = response.map(doc => doc.specialities.map(s => s.name)).flat();
         this.availableSpecialities = [...new Set(allSpecialities)] as string[];
@@ -100,7 +100,9 @@ export class SearchDotorComponent implements OnInit {
   // }
 
   applyFilters() {
-    this.filteredDoctors = this.doctors.filter((doctor) => {
+    this.filteredDoctors = this.doctors
+      .filter(doc => doc.status === 'CONFIRMED')
+      .filter((doctor) => {
       const matchesSearch = this.searchTerm
         ? (doctor.firstname + ' ' + doctor.lastname)
           .toLowerCase()

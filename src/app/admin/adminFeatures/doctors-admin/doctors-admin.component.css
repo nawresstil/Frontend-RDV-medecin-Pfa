@@ -1,0 +1,62 @@
+.status-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+/* Hide default checkbox */
+.status-toggle input.check {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* The slider (label) */
+.checktoggle {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;  /* default gray */
+  transition: 0.4s;
+  border-radius: 34px;
+  border: 1px solid #ccc;
+}
+
+/* The knob */
+.checktoggle::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  border: 1px solid #999;
+}
+
+/* When checked, move the knob to right */
+.status-toggle input.check:checked + .checktoggle::before {
+  transform: translateX(26px);
+}
+
+/* Green background for confirmed */
+.checktoggle.confirmed {
+  background-color: #4CAF50 !important;
+  border-color: #4CAF50 !important;
+}
+
+/* Red background for cancelled/rejected */
+.checktoggle.cancelled {
+  background-color: #f44336 !important;
+  border-color: #f44336 !important;
+}
+
+/* Optionally: change border of knob on active */
+.status-toggle input.check:checked + .checktoggle::before {
+  border-color: #4CAF50;
+}

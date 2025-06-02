@@ -9,9 +9,9 @@
         <li class="active">
           <a [routerLink]="['featuresAdmin/admin-dashboard']"><i class="fe fe-home"></i> <span>Dashboard</span></a>
         </li>
-        <li>
-          <a [routerLink]="['featuresAdmin/admin-appointment']"><i class="fe fe-layout"></i> <span>Appointments</span></a>
-        </li>
+<!--        <li>-->
+<!--          <a [routerLink]="['featuresAdmin/admin-appointment']"><i class="fe fe-layout"></i> <span>Appointments</span></a>-->
+<!--        </li>-->
         <li>
           <a [routerLink]="['featuresAdmin/admin-specialities']"><i class="fe fe-users"></i> <span>Specialities</span></a>
         </li>
@@ -22,7 +22,15 @@
           <a [routerLink]="['featuresAdmin/admin-patients']"><i class="fe fe-user"></i> <span>Patients</span></a>
         </li>
         <li>
-          <a [routerLink]="['featuresAdmin/admin-profile']"><i class="fe fe-user-plus"></i> <span>Profile</span></a>
+          <a [routerLink]="['featuresAdmin/admin-profile']">
+            <i class="fe fe-user-plus"></i>
+            <span>Profile</span></a>
+        </li>
+        <li>
+          <a [routerLink]="" (click)="logout()">
+            <i class="fas fa-sign-out-alt txt"></i>
+            <span>Logout</span>
+          </a>
         </li>
 <!--        <li class="submenu">-->
 <!--          <a href="#"><i class="fe fe-document"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>-->

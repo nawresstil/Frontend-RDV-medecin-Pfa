@@ -18,7 +18,7 @@ import {CommonModule} from '@angular/common';
 @Component({
   selector: 'app-doctor-update-password',
   standalone:true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule], // <-- Add CommonModule here
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './doctor-update-password.component.html',
   styleUrl: './doctor-update-password.component.css'
 })

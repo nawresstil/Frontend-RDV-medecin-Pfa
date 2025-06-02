@@ -82,225 +82,120 @@
                           <th>Doctor</th>
                           <th>Appt Date</th>
                           <th>Booking Date</th>
-                          <th>Follow Up</th>
                           <th>Status</th>
+                          <th class="text-center">Action</th>
                           <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr *ngFor="let appt of appointments">
                           <td>
                             <h2 class="table-avatar">
                               <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                                <img class="avatar-img rounded-circle"
+                                     [src]="'http://localhost:8083/uploads/profile-pictures/' + doctor?.profilePicture"
+                                     alt="Doctor Image"
+                                     *ngIf="doctor?.profilePicture; else defaultAvatar">
                               </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
+                              <ng-template #defaultAvatar>
+                                <img class="avatar-img rounded-circle"
+                                     src="assets/img/default-doctor.png"
+                                     alt="Default Doctor Image">
+                              </ng-template>
+
+                              <a href="doctor-profile.html">
+                                {{ doctor?.firstname }} {{ doctor?.lastname }}
+                                <span *ngIf="doctor?.specialization">({{ doctor.specialization }})</span>
+                              </a>
                             </h2>
                           </td>
-                          <td>14 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
-                          <td>12 Nov 2019</td>
-                          <td>16 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-success-light">Confirm</span></td>
+                          <td>
+                            {{ appt.date | date:'dd MMM yyyy' }} <span class="d-block text-info"> {{ formatTime(appt.startTime) }} - {{ formatTime(appt.endTime) }}</span>
+                          </td>
+                          <td>{{appt.createdAt | date:'dd MMM yyyy'}}</td> <!-- Replace with actual bookingDate if available -->
+<!--                          <td>-</td> &lt;!&ndash; Replace with actual followUpDate if available &ndash;&gt;-->
+                          <td>
+                            <span [ngClass]="{
+                              'badge badge-pill bg-success-light': appt.status === 'CONFIRMED',
+                              'badge badge-pill bg-danger-light': appt.status === 'CANCELLED',
+                              'badge badge-pill bg-warning-light': appt.status === 'PENDING'
+                            }">{{ appt.status }}</span>
+                          </td>
                           <td class="text-right">
                             <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                              <a *ngIf="appt.status === 'PENDING'" href="javascript:void(0);" class="btn btn-sm bg-success-light" (click)="openStatusModal(appt)">
                                 <i class="far fa-edit"></i> Edit
                               </a>
                             </div>
                           </td>
                         </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>12 Nov 2019 <span class="d-block text-info">8.00 PM</span></td>
-                          <td>12 Nov 2019</td>
-                          <td>14 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-success-light">Confirm</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                <i class="far fa-edit"></i> Edit
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>11 Nov 2019 <span class="d-block text-info">11.00 AM</span></td>
-                          <td>10 Nov 2019</td>
-                          <td>13 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-danger-light">Cancelled</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                <i class="far fa-edit"></i> Edit
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>10 Nov 2019 <span class="d-block text-info">3.00 PM</span></td>
-                          <td>10 Nov 2019</td>
-                          <td>12 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-warning-light">Pending</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="edit-prescription.html" class="btn btn-sm bg-success-light">
-                                <i class="far fa-edit"></i> Edit
-                              </a>
-                              <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                <i class="far fa-trash-alt"></i> Cancel
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>9 Nov 2019 <span class="d-block text-info">7.00 PM</span></td>
-                          <td>8 Nov 2019</td>
-                          <td>11 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-success-light">Confirm</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                <i class="far fa-edit"></i> Edit
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>8 Nov 2019 <span class="d-block text-info">9.00 AM</span></td>
-                          <td>6 Nov 2019</td>
-                          <td>10 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-danger-light">Cancelled</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                <i class="far fa-edit"></i> Edit
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>8 Nov 2019 <span class="d-block text-info">6.00 PM</span></td>
-                          <td>6 Nov 2019</td>
-                          <td>10 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-success-light">Confirm</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                <i class="far fa-edit"></i> Edit
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>7 Nov 2019 <span class="d-block text-info">9.00 PM</span></td>
-                          <td>7 Nov 2019</td>
-                          <td>9 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-info-light">Completed</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
-                                <i class="far fa-clock"></i> Reschedule
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>6 Nov 2019 <span class="d-block text-info">8.00 PM</span></td>
-                          <td>4 Nov 2019</td>
-                          <td>8 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-info-light">Completed</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
-                                <i class="far fa-clock"></i> Reschedule
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 class="table-avatar">
-                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                              </a>
-                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>
-                            </h2>
-                          </td>
-                          <td>5 Nov 2019 <span class="d-block text-info">5.00 PM</span></td>
-                          <td>1 Nov 2019</td>
-                          <td>7 Nov 2019</td>
-                          <td><span class="badge badge-pill bg-info-light">Completed</span></td>
-                          <td class="text-right">
-                            <div class="table-action">
-                              <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
-                                <i class="far fa-clock"></i> Reschedule
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
+
+<!--                        <tr>-->
+<!--                          <td>-->
+<!--                            <h2 class="table-avatar">-->
+<!--                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">-->
+<!--                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">-->
+<!--                              </a>-->
+<!--                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>-->
+<!--                            </h2>-->
+<!--                          </td>-->
+<!--                          <td>12 Nov 2019 <span class="d-block text-info">8.00 PM</span></td>-->
+<!--                          <td>12 Nov 2019</td>-->
+<!--                          <td>14 Nov 2019</td>-->
+<!--                          <td><span class="badge badge-pill bg-success-light">Confirm</span></td>-->
+<!--                          <td class="text-right">-->
+<!--                            <div class="table-action">-->
+<!--                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">-->
+<!--                                <i class="far fa-edit"></i> Edit-->
+<!--                              </a>-->
+<!--                            </div>-->
+<!--                          </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                          <td>-->
+<!--                            <h2 class="table-avatar">-->
+<!--                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">-->
+<!--                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">-->
+<!--                              </a>-->
+<!--                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>-->
+<!--                            </h2>-->
+<!--                          </td>-->
+<!--                          <td>11 Nov 2019 <span class="d-block text-info">11.00 AM</span></td>-->
+<!--                          <td>10 Nov 2019</td>-->
+<!--                          <td>13 Nov 2019</td>-->
+<!--                          <td><span class="badge badge-pill bg-danger-light">Cancelled</span></td>-->
+<!--                          <td class="text-right">-->
+<!--                            <div class="table-action">-->
+<!--                              <a href="javascript:void(0);" class="btn btn-sm bg-success-light">-->
+<!--                                <i class="far fa-edit"></i> Edit-->
+<!--                              </a>-->
+<!--                            </div>-->
+<!--                          </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                          <td>-->
+<!--                            <h2 class="table-avatar">-->
+<!--                              <a href="doctor-profile.html" class="avatar avatar-sm mr-2">-->
+<!--                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">-->
+<!--                              </a>-->
+<!--                              <a href="doctor-profile.html">Dr. Darren Elder <span>Dental</span></a>-->
+<!--                            </h2>-->
+<!--                          </td>-->
+<!--                          <td>10 Nov 2019 <span class="d-block text-info">3.00 PM</span></td>-->
+<!--                          <td>10 Nov 2019</td>-->
+<!--                          <td>12 Nov 2019</td>-->
+<!--                          <td><span class="badge badge-pill bg-warning-light">Pending</span></td>-->
+<!--                          <td class="text-right">-->
+<!--                            <div class="table-action">-->
+<!--                              <a href="edit-prescription.html" class="btn btn-sm bg-success-light">-->
+<!--                                <i class="far fa-edit"></i> Edit-->
+<!--                              </a>-->
+<!--                              <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">-->
+<!--                                <i class="far fa-trash-alt"></i> Cancel-->
+<!--                              </a>-->
+<!--                            </div>-->
+<!--                          </td>-->
+<!--                        </tr>-->
                         </tbody>
                       </table>
                     </div>

@@ -7,6 +7,7 @@ import {RegisterRequest} from "../../models/registerRequest";
 import {AuthenticationResponse} from "../../models/authenticationResponse";
 import {AuthenticationService} from '../login/services/authentification.service';
 import {DoctorDto} from '../../models/DoctorDto';
+import {PatientDto} from '../../models/PatientDto';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class UserService {
 
   public getDoctorById(id: number): Observable<DoctorDto> {
     const headers = new HttpHeaders({ Authorization: 'Bearer ' + this.authService.loadToken() });
-    return this.http.get<DoctorDto>(`${environment.baseUrl}/user/${id}`, { headers });
+    return this.http.get<DoctorDto>(`${environment.baseUrl}/user/${id}`);
   }
 
   public updateDoctor(doctorDto: DoctorDto, profilePicture?: File, clinicImages?: File[]): Observable<DoctorDto> {
@@ -76,4 +77,33 @@ export class UserService {
 
     return this.http.put<DoctorDto>(`${environment.baseUrl}/doctor/profile`, formData, { headers });
   }
+  getDoctors(): Observable<DoctorDto[]> {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.loadToken()
+      // 'Content-Type' is NOT set here because Angular will automatically set the correct multipart boundary
+    });
+    return this.http.get<DoctorDto[]>(`${environment.baseUrl}/user/doctors`, { headers });
+  }
+
+  getPatients(): Observable<PatientDto[]> {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.loadToken()
+    });
+    return this.http.get<PatientDto[]>(`${environment.baseUrl}/user/patients`, { headers });
+  }
+
+  acceptDoctor(id: number) {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.loadToken()
+    });
+    return this.http.put(`${environment.baseUrl}/user/${id}/accept`, null, { headers });
+  }
+
+  rejectDoctor(id: number) {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.loadToken()
+    });
+    return this.http.put(`${environment.baseUrl}/user/${id}/reject`, null, { headers });
+  }
+
 }

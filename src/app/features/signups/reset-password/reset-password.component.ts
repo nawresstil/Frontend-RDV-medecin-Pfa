@@ -33,14 +33,27 @@ export class ResetPasswordComponent implements OnInit {
     if (this.forgetForm.valid) {
       this.userService.forgotPassword(this.forgetForm.value).subscribe(
         (response) => {
-          console.log('Password reset request successful');
-          Swal.fire('Success!', 'Password reset email sent successfully.', 'success');
+          Swal.fire('Success!', 'Password reset email sent successfully.', 'success')
+            .then(() => {
+              this.router.navigate(['/signin']);  // Redirect after OK clicked
+            });
         },
         (error) => {
-          console.log('Password reset request not working');
-          Swal.fire('Error!', 'Check your data!', 'error');
+          if (error.status === 404) {
+            // Assuming 404 means email not found
+            Swal.fire('Error!', 'Email address not found.', 'error');
+          } else {
+            Swal.fire('Error!', 'An unexpected error occurred. Please try again.', 'error');
+          }
         }
       );
+    } else {
+      Swal.fire('Error!', 'Please enter a valid email.', 'warning');
     }
   }
+
+  get f() {
+    return this.forgetForm.controls;
+  }
+
 }

@@ -4,29 +4,21 @@
     <div class="banner-wrapper">
       <div class="banner-header text-center">
         <h1>Search Doctor, Make an Appointment</h1>
-        <p>Discover the best doctors nearest to you.</p>
       </div>
 
-      <!-- Search -->
-      <div class="search-box">
-        <form action="templateshub.net">
-          <div class="form-group search-location">
-            <input type="text" class="form-control" placeholder="Search Location">
-            <span class="form-text">Based on your Location</span>
-          </div>
-          <div class="form-group search-info">
-            <input type="text" class="form-control" placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc">
-            <span class="form-text">Ex : Dental or Sugar Check up etc</span>
-          </div>
-          <button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i> <span>Search</span></button>
-        </form>
-      </div>
-      <!-- /Search -->
+      <!-- Centered Search Button -->
+
+        <button class="btn btn-gradient search-btn" [routerLink]="['/home/features/search']">
+          <i class="fas fa-search"></i>
+          <span>Search Doctor</span>
+        </button>
+
+      <!-- /Search Button -->
 
     </div>
   </div>
 </section>
-<!-- /Home Banner -->
+
 
 <!-- Clinic and Specialities -->
 <section class="section section-specialities">
@@ -109,12 +101,12 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="section-header ">
-          <h2>Book Our Doctor</h2>
-          <p>Lorem Ipsum is simply dummy text </p>
+          <h2>Book Your Doctor Today!</h2>
+          <p>Quick and hassle-free appointment booking with our trusted doctors. </p>
         </div>
         <div class="about-content">
-          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-          <p>web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes</p>
+          <p>Trusted medical professionals ready to care for you. Choose your doctor and book your visit.</p>
+          <p>View doctor profiles, specialties, and available time slots.</p>
           <a href="javascript:;">Read More..</a>
         </div>
       </div>
@@ -521,7 +513,7 @@
       </div>
       <div class="col-md-7">
         <div class="section-header">
-          <h2 class="mt-2">Availabe Features in Our Clinic</h2>
+          <h2 class="mt-2">Availabe Features</h2>
           <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. </p>
         </div>
         <div class="features-slider slider">

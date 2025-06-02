@@ -1,0 +1,17 @@
+.nav-tabs .nav-link {
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.form-inline .form-group {
+  margin-right: 10px;
+}
+
+.card {
+  border-radius: 10px;
+  border: none;
+}
+
+.card-body {
+  padding: 2rem;
+}

@@ -28,6 +28,13 @@ export class BookingComponent implements OnInit {
     }[];
   }[] = [];
 
+  confirmedAppointments: {
+    date: string;        // format: yyyy-MM-dd
+    startTime: string;   // format: HH:mm
+    endTime: string;     // format: HH:mm
+  }[] = [];
+
+
   selectedSlot: string | null = null;
   selectedDisponibilityId: number | null = null;
   selectedDoctorId: number | null = null;
@@ -63,6 +70,15 @@ export class BookingComponent implements OnInit {
           console.error('Error loading doctor info:', err);
         }
       });
+      // Fetch confirmed appointments for this doctor
+      this.bookingService.getConfirmedAppointmentsByDoctor(this.selectedDoctorId).subscribe({
+        next: (confirmedRdvList) => {
+          this.confirmedAppointments = confirmedRdvList;
+        },
+        error: (err) => {
+          console.error('Error fetching confirmed appointments:', err);
+        }
+      });
     }
 
     this.userService.getConnectedUser().subscribe({
@@ -73,6 +89,9 @@ export class BookingComponent implements OnInit {
         console.error('Error fetching connected user:', err);
       }
     });
+
+
+
   }
 
   selectSlot(disponibilityId: number, slot: string): void {
@@ -116,6 +135,14 @@ export class BookingComponent implements OnInit {
       }
     });
   }
+  isSlotBooked(dateStr: string, slot: string): boolean {
+    const [startTime, endTime] = slot.split(' - ').map(t => t.trim() + ':00'); // ajoute ":00"
+    return this.confirmedAppointments.some(app =>
+      app.date === dateStr &&
+      app.startTime === startTime &&
+      app.endTime === endTime
+    );
+  }
 
   private groupDisponibilities(): void {
     const grouped: {
@@ -150,13 +177,15 @@ export class BookingComponent implements OnInit {
       .sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime())
       .map(group => ({
         day: group.day,
-        date: group.date,
+        date: group.date, // string formatée
+        dateObj: group.dateObj, // objet Date ajouté ici
         slots: group.slots.sort((a, b) => {
           const [startA] = a.slot.split(' - ');
           const [startB] = b.slot.split(' - ');
           return startA.localeCompare(startB);
         })
       }));
+
   }
 
   private getNextDateFromDay(dayOfWeek: string): string | null {

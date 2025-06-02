@@ -8,6 +8,14 @@ body{
   font-family: 'Jost', sans-serif;
   background-image: linear-gradient(to top, #570549 30%, #d0a7c8 70%);}
 
+.is-invalid {
+  border-color: #dc3545;
+}
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
 
 @keyframes move_wave {
   0% {

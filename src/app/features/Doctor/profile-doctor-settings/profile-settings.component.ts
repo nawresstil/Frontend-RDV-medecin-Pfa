@@ -1,12 +1,13 @@
 // profile-settings.component.ts
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {UserService} from '../../services/user.service';
 import {RouterModule} from '@angular/router';
 import {DoctorDto} from '../../../models/DoctorDto';
 import Swal from 'sweetalert2';
+import {SpecialityService} from '../../../admin/adminFeatures/specialities-admin/service/SpecialityService';
 
 @Component({
   selector: 'app-profile-doctor-settings',
@@ -14,9 +15,13 @@ import Swal from 'sweetalert2';
   imports: [ CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    HttpClientModule],
+    HttpClientModule,
+    FormsModule
+  ],
   templateUrl: './profile-settings.component.html',
-  styleUrl: './profile-doctor-settings.component.css'
+  styleUrl: './profile-doctor-settings.component.css',
+  encapsulation: ViewEncapsulation.None
+
 })
 export class ProfileSettingsComponent implements OnInit {
   doctorForm: FormGroup;
@@ -26,46 +31,28 @@ export class ProfileSettingsComponent implements OnInit {
   clinicImages: File[] = [];
   @ViewChild('clinicFileInput') clinicFileInput!: ElementRef;
   clinicImagePreviews: string[] = [];
+  serviceInput = '';
+  newService: string = '';
+  specialities: any[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private userService: UserService) {
-    // this.doctorForm = this.fb.group({
-    //   id: [304],
-    //   firstname: ['imen'],
-    //   lastname: ['ben ahmed'],
-    //   dateOfBirth: ['1980-05-20'],
-    //   email: ['imen@gmail.com'],
-    //   phone: ['1234567'],
-    //   address: ['123 Street'],
-    //   city: ['Paris'],
-    //   state: ['Ile-de-France'],
-    //   zipCode: ['75000'],
-    //   country: ['France'],
-    //   joiningDate: ['2022-01-01'],
-    //   username: ['doctor2.doctor'],
-    //   oldPassword: ['123456'],
-    //   password: ['123456'],
-    //   confirmPassword: ['123456'],
-    //   gender: ['female'],
-    //   aboutMe: ['Dentistt'],
-    //   biography: ['Very patient doctor'],
-    //   clinicName: ['Heart Center'],
-    //   clinicAddress: ['123 Clinic Street'],
-    //   clinicContact: ['987654321'],
-    //   free: [false],
-    //   customPrice: [75.0],
-    //   services: [['Cardiology', 'General Checkup']],
-    //   specialityIds: [[1, 2]],
-    //   education: [[{ degree: 'MBBSd', institute: 'Harvardd', yearOfCompletion: 2015 }]],
-    //   experience: [[{ hospitalName: 'NY Hospital', designation: 'Doctor', fromDate: '2015', toDate: '2020' }]],
-    //   awards: [[{ name: 'Best Doctor Awardd', year: 2020 }]],
-    //   memberships: [['Medical Association USAAAAAAA']],
-    // });
+
+  constructor(private fb: FormBuilder, private http: HttpClient, private userService: UserService,private el: ElementRef, private specialityService: SpecialityService) {
   }
 
   ngOnInit(): void {
     this.getConnectedUser();
+    this.loadSpecialities();
   }
-
+  loadSpecialities(): void {
+    this.specialityService.getAllSpecialities().subscribe({
+      next: (response) => {
+        this.specialities = response;
+      },
+      error: (err) => {
+        console.error('Error loading specialities', err);
+      }
+    });
+  }
   getConnectedUser(): void {
     this.userService.getConnectedUser().subscribe((user: DoctorDto) => {
       this.initForm(user);
@@ -79,6 +66,7 @@ export class ProfileSettingsComponent implements OnInit {
   }
 
   initForm(user: DoctorDto): void {
+
     this.doctorForm = this.fb.group({
       id: [user.id],
       firstname: [user.firstname, Validators.required],
@@ -104,24 +92,26 @@ export class ProfileSettingsComponent implements OnInit {
       clinicContact: [user.clinicContact],
       free: [user.isFree],
       customPrice: [user.customPrice],
-      services: [user.services],
-      specialityIds: [user.specialityIds],
+      services: this.fb.array(user.services.map(e => this.fb.group({
+        services_name: [e.services_name, Validators.required]
+    }))),
+      specialityIds: [user.specialityIds?.[0] ?? null, Validators.required],
       education: this.fb.array(user.education.map(e => this.fb.group({
-        degree: [e.degree],
-        institute: [e.institute],
-        yearOfCompletion: [e.yearOfCompletion]
+        degree: [e.degree, Validators.required],
+        institute: [e.institute, Validators.required],
+        yearOfCompletion: [e.yearOfCompletion, Validators.required]
       }))),
 
       experience: this.fb.array(user.experience.map(e => this.fb.group({
-        hospitalName: [e.hospitalName],
-        fromDate: [e.fromDate],
-        toDate: [e.toDate],
-        designation: [e.designation]
+        hospitalName: [e.hospitalName, Validators.required],
+        fromDate: [e.fromDate, Validators.required],
+        toDate: [e.toDate, Validators.required],
+        designation: [e.designation, Validators.required]
       }))),
 
       awards: this.fb.array(user.awards.map(a => this.fb.group({
-        name: [a.name],
-        year: [a.year]
+        name: [a.name, Validators.required],
+        year: [a.year, Validators.required]
       })))
     });
   }
@@ -169,17 +159,36 @@ export class ProfileSettingsComponent implements OnInit {
   onSubmit() {
     if (this.doctorForm.invalid) {
       this.doctorForm.markAllAsTouched();
+      // this.scrollToFirstInvalidControl();
 
       Swal.fire({
         icon: 'error',
-        title: 'Form Invalid',
-        text: 'Please fill in all required fields correctly.',
+        title: 'Missing Information',
+        text: 'Please fill in all required fields before submitting.',
       });
       return;
     }
-    const formData = new FormData();
+    const dto = {
+      ...this.doctorForm.value,
+      services: this.services.value,
+      education: this.education.value,
+      experience: this.experience.value,
+      awards: this.awards.value,
+    };
 
-    const dto = this.doctorForm.value;
+    if (typeof dto.specialityIds === 'string') {
+      dto.specialityIds = [parseInt(dto.specialityIds, 10)];
+    }
+
+    if (!Array.isArray(dto.specialityIds)) {
+      dto.specialityIds = [dto.specialityIds];
+    }
+
+    console.log('SpecialityIds:', dto.specialityIds); // Should show as array [7]
+    console.log('Services being submitted:', this.services.value);
+    console.log('Full DTO:', dto);
+
+    const formData = new FormData();
     formData.append('doctorDto', JSON.stringify(dto));
 
     if (this.profilePicture) {
@@ -211,31 +220,52 @@ export class ProfileSettingsComponent implements OnInit {
 
       }
     });
+
   }
+  onSpecialityChange(id: number) {
+    this.doctorForm.get('specialityIds')?.setValue([id]); // force array
+  }
+  scrollToFirstInvalidControl() {
+    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector(
+      'form .ng-invalid'
+    );
+    if (firstInvalidControl) {
+      firstInvalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalidControl.focus();
+    }
+  }
+
 
   addEducation() {
     this.education.push(this.fb.group({
-      degree: [''],
-      institute: [''],
-      yearOfCompletion: ['']
+      degree: ['', Validators.required],
+      institute: ['', Validators.required],
+      yearOfCompletion: ['', Validators.required]
     }));
   }
 
   addExperience() {
     this.experience.push(this.fb.group({
-      hospitalName: [''],
-      fromDate: [''],
-      toDate: [''],
-      designation: ['']
+      hospitalName: ['', Validators.required],
+      fromDate: ['', Validators.required],
+      toDate: ['', Validators.required],
+      designation: ['', Validators.required]
     }));
   }
 
   addAward() {
     this.awards.push(this.fb.group({
-      name: [''],
-      year: ['']
+      name: ['', Validators.required],
+      year: ['', Validators.required]
     }));
   }
+  addService() {
+      this.services.push(this.fb.group({
+        services_name: ['', Validators.required]
+      }));
+  }
+
+
   get education(): FormArray {
     return this.doctorForm.get('education') as FormArray;
   }
@@ -255,4 +285,13 @@ export class ProfileSettingsComponent implements OnInit {
   removeAward(index: number) {
     this.awards.removeAt(index);
   }
+  get services(): FormArray {
+    return this.doctorForm.get('services') as FormArray;
+  }
+  removeService(index: number) {
+    this.services.removeAt(index);
+  }
+
+
+
 }

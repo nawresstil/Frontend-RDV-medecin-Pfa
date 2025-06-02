@@ -62,13 +62,15 @@
         <div class="form-group">
           <label>Phone Number</label>
           <input type="text" class="form-control" formControlName="phone">
+          <div *ngIf="doctorForm.get('phone')?.invalid && doctorForm.get('phone')?.touched" class="text-danger">
+            Phone number is required.
+          </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
           <label>Gender</label>
           <select class="form-control" formControlName="gender">
-            <option value="">Select</option>
               <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
@@ -78,6 +80,27 @@
         <div class="form-group mb-0">
           <label>Date of Birth</label>
           <input type="text" class="form-control" formControlName="dateOfBirth">
+          <div *ngIf="doctorForm.get('dateOfBirth')?.invalid && doctorForm.get('dateOfBirth')?.touched" class="text-danger">
+            Date of birth is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-0">
+          <label>Country</label>
+          <input type="text" class="form-control" formControlName="country">
+          <div *ngIf="doctorForm.get('country')?.invalid && doctorForm.get('country')?.touched" class="text-danger">
+            Country is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-0">
+          <label>City</label>
+          <input type="text" class="form-control" formControlName="city">
+          <div *ngIf="doctorForm.get('city')?.invalid && doctorForm.get('city')?.touched" class="text-danger">
+            City is required.
+          </div>
         </div>
       </div>
     </div>
@@ -91,7 +114,7 @@
     <h4 class="card-title">About Me</h4>
     <div class="form-group mb-0">
       <label>Biography</label>
-      <textarea class="form-control" rows="5" formControlName="aboutMe"></textarea>
+      <textarea class="form-control" rows="10" formControlName="biography"></textarea>
     </div>
   </div>
 </div>
@@ -108,12 +131,12 @@
           <input type="text" class="form-control" formControlName="clinicName">
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Clinic Address</label>
-          <input type="text" class="form-control" formControlName="clinicAddress">
-        </div>
-      </div>
+<!--      <div class="col-md-6">-->
+<!--        <div class="form-group">-->
+<!--          <label>Clinic Address</label>-->
+<!--          <input type="text" class="form-control" formControlName="clinicAddress">-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="col-md-12">
         <div class="form-group">
           <label>Clinic Images</label>
@@ -145,41 +168,47 @@
     <div class="row form-row">
       <div class="col-md-6">
         <div class="form-group">
-          <label>Address Line 1</label>
-          <input type="text" class="form-control" formControlName="clinicName">
+          <label>Address</label>
+            <input type="text" class="form-control" formControlName="clinicAddress">
+          <div *ngIf="doctorForm.get('clinicAddress')?.invalid && doctorForm.get('clinicAddress')?.touched" class="text-danger">
+            Clinic address is required.
+          </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label class="control-label">Address Line 2</label>
-          <input type="text" class="form-control">
+          <label class="control-label">Clinic contact</label>
+          <input type="text" class="form-control" formControlName="clinicContact">
+          <div *ngIf="doctorForm.get('clinicContact')?.invalid && doctorForm.get('clinicContact')?.touched" class="text-danger">
+            Clinic contact is required.
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">City</label>
-          <input type="text" class="form-control">
-        </div>
-      </div>
+<!--      <div class="col-md-6">-->
+<!--        <div class="form-group">-->
+<!--          <label class="control-label">City</label>-->
+<!--          <input type="text" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">State / Province</label>
-          <input type="text" class="form-control">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">Country</label>
-          <input type="text" class="form-control">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">Postal Code</label>
-          <input type="text" class="form-control">
-        </div>
-      </div>
+<!--      <div class="col-md-6">-->
+<!--        <div class="form-group">-->
+<!--          <label class="control-label">State / Province</label>-->
+<!--          <input type="text" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="col-md-6">-->
+<!--        <div class="form-group">-->
+<!--          <label class="control-label">Country</label>-->
+<!--          <input type="text" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="col-md-6">-->
+<!--        <div class="form-group">-->
+<!--          <label class="control-label">Postal Code</label>-->
+<!--          <input type="text" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </div>
@@ -192,13 +221,14 @@
 
     <div class="form-group mb-0">
       <div id="pricing_select">
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="price_free" name="rating_option" class="custom-control-input" value="price_free" checked>
-          <label class="custom-control-label" for="price_free">Free</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="price_custom" name="rating_option" value="custom_price" class="custom-control-input">
-          <label class="custom-control-label" for="price_custom">Custom Price (per hour)</label>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Custom Price</label>
+            <input type="number" class="form-control" formControlName="customPrice">
+            <div *ngIf="doctorForm.get('customPrice')?.invalid && doctorForm.get('customPrice')?.touched" class="text-danger">
+              Price is required.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -214,24 +244,55 @@
   </div>
 </div>
 <!-- /Pricing -->
-
-<!-- Services and Specialization -->
-<div class="card services-card">
-  <div class="card-body">
-    <h4 class="card-title">Services and Specialization</h4>
+  <!-- speciality -->
+  <div class="col-md-6">
     <div class="form-group">
-      <label>Services</label>
-      <input type="text" data-role="tagsinput" class="input-tags form-control" placeholder="Enter Services" name="services" value="Tooth cleaning " id="services">
-      <small class="form-text text-muted">Note : Type & Press enter to add new services</small>
-    </div>
-    <div class="form-group mb-0">
-      <label>Specialization </label>
-      <input class="input-tags form-control" type="text" data-role="tagsinput" placeholder="Enter Specialization" name="specialist" value="Children Care,Dental Care" id="specialist">
-      <small class="form-text text-muted">Note : Type & Press  enter to add new specialization</small>
+      <label>Speciality <span class="text-danger">*</span></label>
+      <select formControlName="specialityIds" class="form-control">
+        <option [ngValue]="null" disabled>Select a speciality</option>
+        <option *ngFor="let s of specialities" [ngValue]="s.id">{{ s.name }}</option>
+      </select>
+      <div *ngIf="doctorForm.get('specialityIds')?.invalid && doctorForm.get('specialityIds')?.touched" class="text-danger">
+        Speciality is required.
+      </div>
     </div>
   </div>
-</div>
-<!-- /Services and Specialization -->
+  <!-- /speciality -->
+
+  <!-- Services -->
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Services</h4>
+      <div class="service-info" formArrayName="services">
+        <div *ngFor="let service of services.controls; let i = index" [formGroupName]="i" class="row form-row service-cont">
+          <div class="col-12 col-md-10 col-lg-11">
+            <div class="row form-row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <label>Service Name</label>
+                  <input type="text" class="form-control" formControlName="services_name">
+                  <div *ngIf="service.get('services_name')?.invalid && service.get('services_name')?.touched" class="text-danger">
+                    Services name is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-2 col-lg-1 d-flex align-items-center">
+            <a href="javascript:void(0);" (click)="removeService(i)" class="text-danger">
+              <i class="fa fa-trash fa-lg"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="add-more">
+        <a href="javascript:void(0);" class="add-service" (click)="addService()">
+          <i class="fa fa-plus-circle"></i> Add More
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- /Services -->
 
   <!-- Education -->
   <div class="card">
@@ -245,18 +306,27 @@
                 <div class="form-group">
                   <label>Degree</label>
                   <input type="text" class="form-control" formControlName="degree">
+                  <div *ngIf="edu.get('degree')?.invalid && edu.get('degree')?.touched" class="text-danger">
+                    Degree is required.
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <label>College/Institute</label>
                   <input type="text" class="form-control" formControlName="institute">
+                  <div *ngIf="edu.get('institute')?.invalid && edu.get('institute')?.touched" class="text-danger">
+                    Institute is required.
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <label>Year of Completion</label>
                   <input type="text" class="form-control" formControlName="yearOfCompletion">
+                  <div *ngIf="edu.get('yearOfCompletion')?.invalid && edu.get('yearOfCompletion')?.touched" class="text-danger">
+                    Year of completion is required.
+                  </div>
                 </div>
               </div>
             </div>
@@ -289,24 +359,36 @@
                 <div class="form-group">
                   <label>Hospital Name</label>
                   <input type="text" class="form-control" formControlName="hospitalName">
+                  <div *ngIf="exp.get('hospitalName')?.invalid && exp.get('hospitalName')?.touched" class="text-danger">
+                    Hospital Name is required.
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <label>From</label>
                   <input type="text" class="form-control" formControlName="fromDate">
+                  <div *ngIf="exp.get('fromDate')?.invalid && exp.get('fromDate')?.touched" class="text-danger">
+                    From date is required.
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <label>To</label>
                   <input type="text" class="form-control" formControlName="toDate">
+                  <div *ngIf="exp.get('toDate')?.invalid && exp.get('toDate')?.touched" class="text-danger">
+                    To date is required.
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <label>Designation</label>
                   <input type="text" class="form-control" formControlName="designation">
+                  <div *ngIf="exp.get('designation')?.invalid && exp.get('designation')?.touched" class="text-danger">
+                    Designation is required.
+                  </div>
                 </div>
               </div>
             </div>
@@ -340,12 +422,18 @@
                 <div class="form-group">
                   <label>Award</label>
                   <input type="text" class="form-control" formControlName="name">
+                  <div *ngIf="award.get('name')?.invalid && award.get('name')?.touched" class="text-danger">
+                    Award's name is required.
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-group">
                   <label>Year</label>
                   <input type="text" class="form-control" formControlName="year">
+                  <div *ngIf="award.get('year')?.invalid && award.get('year')?.touched" class="text-danger">
+                    year is required.
+                  </div>
                 </div>
               </div>
             </div>
@@ -366,8 +454,7 @@
   </div>
   <!-- /Awards -->
 
-
-<div class="submit-section submit-btn-bottom">
+  <div class="submit-section submit-btn-bottom">
   <button type="submit" class="btn btn-primary submit-btn" [disabled]="doctorForm.invalid">Save Changes</button>
 </div>
 </form>

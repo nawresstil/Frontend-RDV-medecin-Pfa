@@ -19,7 +19,6 @@ import {SceneEditorComponent} from './Doctor/scene-editor/scene-editor.component
     ReactiveFormsModule,
     FeaturesRoutingModule,
     SearchDotorComponent,
-    DashboardDoctorComponent,
     PatientDashboardComponent,
     AppointmentsComponent,
     ScheduleTimingsComponent,

@@ -16,7 +16,7 @@ export class SearchDoctorsService {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + this.authService.loadToken()
     });
-    return this.http.get(environment.baseUrl+`/user/doctors`, { headers });
+    return this.http.get(environment.baseUrl+`/user/doctors` );
   }
   public getFormationById(id) {
     const headers = new HttpHeaders({Authorization: 'Bearer ' + this.authService.loadToken()});

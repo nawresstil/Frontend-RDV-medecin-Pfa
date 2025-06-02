@@ -1,5 +1,8 @@
 <div class="appointments">
 
+  <div *ngIf="appointments.length === 0" class="alert alert-warning mt-3 text-center">
+    <p class="text-muted">No appointment found.</p>
+  </div>
   <div *ngFor="let appt of appointments" class="appointment-list">
     <div class="profile-info-widget">
       <a [routerLink]="['/home/features/patient-profile', appt.patient.id]" class="booking-doc-img">

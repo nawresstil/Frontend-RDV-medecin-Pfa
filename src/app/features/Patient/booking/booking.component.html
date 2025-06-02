@@ -23,7 +23,9 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-
+        <div *ngIf="!connectedUser" class="alert alert-warning mt-3 text-center">
+          <p class="text-muted">Please connect first to get your appointment.</p>
+        </div>
         <!-- Doctor Card -->
         <div *ngIf="doctor" class="card">
           <div class="card-body">
@@ -91,11 +93,20 @@
                     <li *ngFor="let group of groupedDisponibilities">
                       <a *ngFor="let slotObj of group.slots"
                          class="timing"
-                         [ngClass]="{ 'selected': selectedSlot === slotObj.slot && selectedDisponibilityId === slotObj.dispId }"
-                         (click)="selectSlot(slotObj.dispId, slotObj.slot)">
-                        <span>{{ slotObj.slot }}</span>
+                         [ngClass]="{
+                           'selected': selectedSlot === slotObj.slot && selectedDisponibilityId === slotObj.dispId,
+                           'CONFIRMED': isSlotBooked(group.dateObj.toISOString().split('T')[0], slotObj.slot)
+                         }"
+                         [class.disabled]="isSlotBooked(group.dateObj.toISOString().split('T')[0], slotObj.slot)"
+                         [style.pointer-events]="isSlotBooked(group.dateObj.toISOString().split('T')[0], slotObj.slot) ? 'none' : 'auto'"
+                         [style.opacity]="isSlotBooked(group.dateObj.toISOString().split('T')[0], slotObj.slot) ? 0.4 : 1"
+                         (click)="!isSlotBooked(group.dateObj.toISOString().split('T')[0], slotObj.slot) && selectSlot(slotObj.dispId, slotObj.slot)">
+                      <span [title]="isSlotBooked(group.dateObj.toISOString().split('T')[0], slotObj.slot) ? 'Confirmed appointment' : ''">
+                        {{ slotObj.slot }}
+                      </span>
                       </a>
                     </li>
+
 
                   </ul>
                 </div>
